@@ -1,10 +1,8 @@
-
-
 .container {
     border: 2px solid black;
     margin: 30px;
-    background: url("../Blue_striped.jpg") no-repeat;
-    background-size: 100%;
+    /*background: url("../Blue_striped.jpg") no-repeat;
+    background-size: 100%;*/
 }
 
 .firstRow {
@@ -17,6 +15,6 @@
     border: 1px solid;
 }
 
-.header {
-    /*background-color: #1f33b6;*/
+#paySlipTable {
+    margin: 0 5px 0 5px;
 }

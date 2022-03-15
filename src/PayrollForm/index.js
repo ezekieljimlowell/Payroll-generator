@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import PaySlip from "../PaySlip";
+import styles from './index.module.css';
+import EmployeeTable from '../EmployeeTable/EmployeeTable';
 
 const PayrollForm = () => {
     const [basicData, setBasicData] = useState({
@@ -26,6 +28,7 @@ const PayrollForm = () => {
         esi: "",
         professionalTax: ""
     })
+    const [localStorageArray, setArray] = useState([]);
     const [showPaySlip, setPaySlip] = useState(false);
 
     const handleBasicData = (event) => {
@@ -47,7 +50,33 @@ const PayrollForm = () => {
     const generatePaySlip = (event) => {
         event.preventDefault();
         setPaySlip(true);
+        const employeeObject = {
+            id: Math.random(),
+            empName: basicData.employeeName,
+            empCode: basicData.employeeCode,
+            address: basicData.address,
+            month: basicData.month,
+            accountNumber: basicData.accountNumber,
+            department: basicData.department,
+            designation: basicData.designation,
+            paidDays: basicData.paidDays,
+            lop: basicData.lop,
+            uanNumber: basicData.uanNumber,
+            aadharNumber: basicData.aadharNumber,
+            hra: salaryData.hra,
+            basic: salaryData.basic,
+            conveyanceAllowance: salaryData.conveyanceAllowance,
+            specialAllowance: salaryData.specialAllowance,
+            bonus: salaryData.bonus,
+            pfAmount: salaryData.pfAmount,
+            esi: salaryData.esi,
+            professionalTax: salaryData.professionalTax
+        };
+        localStorageArray.push(employeeObject);
+        localStorage.setItem("empRow", JSON.stringify(localStorageArray));
     }
+
+    let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
 
     const props = {
         ...basicData,
@@ -55,8 +84,9 @@ const PayrollForm = () => {
     }
 
     return (
-        <>
-            <form onSubmit={generatePaySlip} className="form-group">
+        <div>
+            <form onSubmit={generatePaySlip} className="form-group" id={styles.payRollForm}>
+                <h1>Apton works payroll</h1>
                 <h2>Basic Information</h2>
                 <div className="form-row">
                     <label>Employee name </label>
@@ -85,7 +115,7 @@ const PayrollForm = () => {
                 <div className="form-row">
                     <label>Month </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="month" value={basicData.month} required></input>
+                        <input type="month" className="form-control" onChange={handleBasicData} name="month" value={basicData.month} required></input>
                     </div>
                 </div>
                 <div className="form-row">
@@ -185,10 +215,38 @@ const PayrollForm = () => {
                 <button type="submit">Generate</button>
                 <button type="button" onClick={() => setPaySlip(false)}>Reset</button>
             </form>
+            <br></br>
+            {arrayOfObject.length > 0 && arrayOfObject.map(data => {
+                return (
+                    <EmployeeTable
+                        id={data.id}
+                        employeeName={data.empName}
+                        employeeCode={data.empCode}
+                        department={data.department}
+                        designation={data.designation}
+                        paidDays={data.paidDays}
+                        lop={data.lop}
+                        uanNumber={data.uanNumber}
+                        aadharNumber={data.aadharNumber}
+                        address={data.address}
+                        month={data.month}
+                        accountNumber={data.accountNumber}
+                        hra={data.hra}
+                        basic={data.basic}
+                        conveyanceAllowance={data.conveyanceAllowance}
+                        specialAllowance={data.specialAllowance}
+                        bonus={data.bonus}
+                        pfAmount={data.pfAmount}
+                        esi={data.esi}
+                        professionalTax={data.professionalTax}
+                        key={data.id}
+                    />
+                )
+            })}
             <div>
                 {showPaySlip && <PaySlip {...props} />}
             </div>
-        </>
+        </div>
     )
 }
 

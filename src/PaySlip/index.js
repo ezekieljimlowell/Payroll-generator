@@ -34,7 +34,7 @@ const PaySlip = (props) => {
                     <div>Loss of Pay: {lop}</div>
                 </div>
             </div>
-            <table>
+            <table className="table" id={classes.paySlipTable}>
                 <thead>
                     <tr>
                         <th>Earnings</th>
@@ -45,15 +45,50 @@ const PaySlip = (props) => {
                         <th>Amount yearly</th>
                     </tr>
                 </thead>
+                <tbody>
+                    <tr>
+                        <td>Basic</td>
+                        <td>{basic}</td>
+                        <td>{basic*12}</td>
+                        <td>PF amount</td>
+                        <td>{pfAmount}</td>
+                        <td>{pfAmount*12}</td>
+                    </tr>
+                    <tr>
+                        <td>HRA</td>
+                        <td>{hra}</td>
+                        <td>{hra*12}</td>
+                        <td>ESI</td>
+                        <td>{esi}</td>
+                        <td>{esi*12}</td>
+                    </tr>
+                    <tr>
+                        <td>Conveyance allowance</td>
+                        <td>{conveyanceAllowance}</td>
+                        <td>{conveyanceAllowance*12}</td>
+                        <td>Professional Tax</td>
+                        <td>{professionalTax}</td>
+                        <td>{professionalTax*12}</td>
+                    </tr>
+                    <tr>
+                        <td>Special allowance</td>
+                        <td>{specialAllowance}</td>
+                        <td>{specialAllowance*12}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Bonus</td>
+                        <td>{bonus}</td>
+                        <td>{bonus*12}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>                
             </table>
-            <div>{hra}</div>
-            <div>{basic}</div>
-            <div>{conveyanceAllowance}</div>
-            <div>{specialAllowance}</div>
-            <div>{bonus}</div>
-            <div>{pfAmount}</div>
-            <div>{esi}</div>
-            <div>{professionalTax}</div>
+            <br></br>
         </div>
     )
 }
