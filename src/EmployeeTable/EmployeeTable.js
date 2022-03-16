@@ -1,20 +1,46 @@
 import React, { useState } from "react";
 import PaySlip from "../PaySlip";
+import styles from './EmployeeTable.module.css';
+import ShowPaySlip from "./ShowPaySlip";
 
-const EmployeeTable = (props) => {
-    const { id, employeeName, employeeCode, department,
-        designation, paidDays, lop, uanNumber,
-        aadharNumber, address, month, accountNumber,
-        hra, basic, conveyanceAllowance, specialAllowance,
-        bonus, pfAmount, esi, professionalTax } = props;
+const EmployeeTable = ({ arrayOfObject, setEmployeeData }) => {
     const [showPaySlip, setShowPaySlip] = useState(false);
+    let [paySlipData, setPaySlipData] = useState("");
+    let [hideIndex, setHideIndex] = useState("");
+    //let [arrayAfterDeletion, setDelete] = useState([]);
 
-    console.log(id);
-    let paySlipProperties = {};
+    const showHandler = (index) => {
+        let filteredData = arrayOfObject.filter((data, i) => i === index)
+        setPaySlipData(filteredData);
+        setShowPaySlip(true);
+        setHideIndex(index);
+    }
+
+    const hideHandler = (index) => {
+        if (hideIndex === index) {
+            setShowPaySlip(false);
+        }
+    }
+
+    /*const deleteHandler = (index) => {
+        console.log(index);
+        if (arrayOfObject.length === index) {
+            arrayOfObject.splice(index - 1, 1);
+            localStorage.setItem("empRow", JSON.stringify(arrayOfObject));
+            setEmployeeData(JSON.parse(localStorage.getItem("empRow") || "[]"));
+        }
+        else {
+            arrayOfObject.splice(index, 1);
+            localStorage.setItem("empRow", JSON.stringify(arrayOfObject));
+            setEmployeeData(JSON.parse(localStorage.getItem("empRow") || "[]"));
+        }
+    }*/
+
     
+
     return (
         <>
-            <table>
+            <table className="table table-striped">
                 <thead>
                     <tr>
                         <th>Employee name</th>
@@ -25,27 +51,37 @@ const EmployeeTable = (props) => {
                         <th>Loss of pay</th>
                         <th>UAN number</th>
                         <th>Aadhar number</th>
-                        <th>Delete</th>
-                        <th>Expand pay slip</th>
+                        {/*<th>Delete</th>*/}
+                        <th>Expand</th>
+                        <th>Hide</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>{employeeName}</td>
-                        <td>{employeeCode}</td>
-                        <td>{department}</td>
-                        <td>{designation}</td>
-                        <td>{paidDays}</td>
-                        <td>{lop}</td>
-                        <td>{uanNumber}</td>
-                        <td>{aadharNumber}</td>
-                        <td><button type="button">Delete</button></td>
-                        <td><button type="button" onClick={() => setShowPaySlip(true)}>Show</button></td>
-                        <td><button type="button" onClick={() => setShowPaySlip(false)}>Hide</button></td>
-                    </tr>
+                    {arrayOfObject.length > 0 && arrayOfObject.map((data, index) => {
+                        return (
+                            <tr key={data.id}>
+                                <td>{data.empName}</td>
+                                <td>{data.empCode}</td>
+                                <td>{data.department}</td>
+                                <td>{data.designation}</td>
+                                <td>{data.paidDays}</td>
+                                <td>{data.lop}</td>
+                                <td>{data.uanNumber}</td>
+                                <td>{data.aadharNumber}</td>
+                                {/*<td><button type="button" onClick={() => deleteHandler(data.id)}>Delete</button></td>*/}
+                                <td><button type="button" onClick={() => {
+                                    showHandler(index);
+                                }}>Show</button></td>
+                                <td><button type="button" onClick={() => hideHandler(index)}>Hide</button></td>
+                                <td><button type="button" onClick={() => window.print(<ShowPaySlip />)}>Print</button></td>
+                            </tr>
+                        )
+                    }
+                    )}
                 </tbody>
             </table>
-            {showPaySlip ? <PaySlip {...props}/> : null}
+            {(showPaySlip && paySlipData.length > 0) && paySlipData.map(data => <ShowPaySlip {...data} className={styles.paySlip} />)}
+
         </>
     )
 }

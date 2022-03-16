@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PaySlip from "../PaySlip";
 import styles from './index.module.css';
 import EmployeeTable from '../EmployeeTable/EmployeeTable';
@@ -30,6 +30,14 @@ const PayrollForm = () => {
     })
     const [localStorageArray, setArray] = useState([]);
     const [showPaySlip, setPaySlip] = useState(false);
+    const [employeeData, setEmployeeData] = useState([]);
+    let [number, setNumber] = useState(-1);
+
+    useEffect(() => {
+        let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
+        setEmployeeData(arrayOfObject);
+        console.log(arrayOfObject);
+    }, [])
 
     const handleBasicData = (event) => {
         const value = event.target.value;
@@ -47,11 +55,14 @@ const PayrollForm = () => {
         });
     }
 
+    //let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
+
     const generatePaySlip = (event) => {
         event.preventDefault();
         setPaySlip(true);
+        setNumber(++number);
         const employeeObject = {
-            id: Math.random(),
+            id: number,
             empName: basicData.employeeName,
             empCode: basicData.employeeCode,
             address: basicData.address,
@@ -72,15 +83,21 @@ const PayrollForm = () => {
             esi: salaryData.esi,
             professionalTax: salaryData.professionalTax
         };
-        localStorageArray.push(employeeObject);
-        localStorage.setItem("empRow", JSON.stringify(localStorageArray));
-    }
 
-    let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
+        localStorageArray.push(employeeObject)
+        localStorage.setItem("empRow", JSON.stringify(localStorageArray));
+        let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
+        setEmployeeData(arrayOfObject);
+        //setEmployeeData(arrayOfObject);
+    }
 
     const props = {
         ...basicData,
         ...salaryData
+    }
+
+    const employeeProp = {
+        ...employeeData
     }
 
     return (
@@ -91,73 +108,73 @@ const PayrollForm = () => {
                 <div className="form-row">
                     <label>Employee name </label>
                     <div className="col-6">
-                        <input className="form-control" type="text" onChange={handleBasicData} name="employeeName" value={basicData.employeeName} required></input>
+                        <input className="form-control" type="text" onChange={handleBasicData} name="employeeName" value={basicData.employeeName}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Employee code </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="employeeCode" value={basicData.employeeCode} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="employeeCode" value={basicData.employeeCode}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Employee Address </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="address" value={basicData.address} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="address" value={basicData.address}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Aadhar Number </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="aadharNumber" value={basicData.aadharNumber} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="aadharNumber" value={basicData.aadharNumber}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Month </label>
                     <div className="col-6">
-                        <input type="month" className="form-control" onChange={handleBasicData} name="month" value={basicData.month} required></input>
+                        <input type="month" className="form-control" onChange={handleBasicData} name="month" value={basicData.month}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Department </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="department" value={basicData.department} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="department" value={basicData.department}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>PF account number </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="pfNumber" value={basicData.pfNumber} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="pfNumber" value={basicData.pfNumber}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Paid days </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="paidDays" value={basicData.paidDays} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="paidDays" value={basicData.paidDays}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>LOP </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="lop" value={basicData.lop} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="lop" value={basicData.lop}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>UAN number </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="uanNumber" value={basicData.uanNumber} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="uanNumber" value={basicData.uanNumber}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Designation </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="designation" value={basicData.designation} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="designation" value={basicData.designation}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Bank account number </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleBasicData} name="accountNumber" value={basicData.accountNumber} required></input>
+                        <input type="text" className="form-control" onChange={handleBasicData} name="accountNumber" value={basicData.accountNumber}></input>
                     </div>
                 </div>
 
@@ -166,49 +183,49 @@ const PayrollForm = () => {
                 <div className="form-row">
                     <label>HRA</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" name="hra" onChange={handleSalaryDetails} required></input>
+                        <input type="text" className="form-control" name="hra" onChange={handleSalaryDetails}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Basic</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="basic" value={salaryData.basic} required></input>
+                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="basic" value={salaryData.basic}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Conveyance allowance</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="conveyanceAllowance" value={salaryData.conveyanceAllowance} required></input>
+                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="conveyanceAllowance" value={salaryData.conveyanceAllowance}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Special allowance</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="specialAllowance" value={salaryData.specialAllowance} required></input>
+                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="specialAllowance" value={salaryData.specialAllowance}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Bonus</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="bonus" value={salaryData.bonus} required></input>
+                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="bonus" value={salaryData.bonus}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>PF amount </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="pfAmount" value={salaryData.pfAmount} required></input>
+                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="pfAmount" value={salaryData.pfAmount}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>ESI </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="esi" value={salaryData.esi} required></input>
+                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="esi" value={salaryData.esi}></input>
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Professional tax </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="professionalTax" value={salaryData.professionalTax} required></input>
+                        <input type="text" className="form-control" onChange={handleSalaryDetails} name="professionalTax" value={salaryData.professionalTax}></input>
                     </div>
                 </div>
                 <br></br>
@@ -216,33 +233,14 @@ const PayrollForm = () => {
                 <button type="button" onClick={() => setPaySlip(false)}>Reset</button>
             </form>
             <br></br>
-            {arrayOfObject.length > 0 && arrayOfObject.map(data => {
-                return (
-                    <EmployeeTable
-                        id={data.id}
-                        employeeName={data.empName}
-                        employeeCode={data.empCode}
-                        department={data.department}
-                        designation={data.designation}
-                        paidDays={data.paidDays}
-                        lop={data.lop}
-                        uanNumber={data.uanNumber}
-                        aadharNumber={data.aadharNumber}
-                        address={data.address}
-                        month={data.month}
-                        accountNumber={data.accountNumber}
-                        hra={data.hra}
-                        basic={data.basic}
-                        conveyanceAllowance={data.conveyanceAllowance}
-                        specialAllowance={data.specialAllowance}
-                        bonus={data.bonus}
-                        pfAmount={data.pfAmount}
-                        esi={data.esi}
-                        professionalTax={data.professionalTax}
-                        key={data.id}
-                    />
-                )
-            })}
+            {employeeData.length > 0 && <>
+                <EmployeeTable
+                    arrayOfObject={employeeData}
+                    //employeeProp={employeeProp}
+                    setEmployeeData={setEmployeeData}
+                    employeeData={employeeData}
+                />
+            </>}
             <div>
                 {showPaySlip && <PaySlip {...props} />}
             </div>
