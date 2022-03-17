@@ -3,7 +3,7 @@ import PaySlip from "../PaySlip";
 import styles from './EmployeeTable.module.css';
 import ShowPaySlip from "./ShowPaySlip";
 
-const EmployeeTable = ({ arrayOfObject, setEmployeeData }) => {
+const EmployeeTable = ({ arrayOfObject }) => {
     const [showPaySlip, setShowPaySlip] = useState(false);
     let [paySlipData, setPaySlipData] = useState("");
     let [hideIndex, setHideIndex] = useState("");
@@ -15,6 +15,7 @@ const EmployeeTable = ({ arrayOfObject, setEmployeeData }) => {
         setShowPaySlip(true);
         setHideIndex(index);
     }
+    console.log(paySlipData);
 
     const hideHandler = (index) => {
         if (hideIndex === index) {
@@ -35,8 +36,6 @@ const EmployeeTable = ({ arrayOfObject, setEmployeeData }) => {
             setEmployeeData(JSON.parse(localStorage.getItem("empRow") || "[]"));
         }
     }*/
-
-    
 
     return (
         <>
@@ -73,14 +72,13 @@ const EmployeeTable = ({ arrayOfObject, setEmployeeData }) => {
                                     showHandler(index);
                                 }}>Show</button></td>
                                 <td><button type="button" onClick={() => hideHandler(index)}>Hide</button></td>
-                                <td><button type="button" onClick={() => window.print(<ShowPaySlip />)}>Print</button></td>
                             </tr>
                         )
                     }
                     )}
                 </tbody>
             </table>
-            {(showPaySlip && paySlipData.length > 0) && paySlipData.map(data => <ShowPaySlip {...data} className={styles.paySlip} />)}
+            {(showPaySlip && paySlipData.length > 0) && paySlipData.map(data => <div key={paySlipData}><ShowPaySlip {...data} className={styles.paySlip}/></div>)}
 
         </>
     )

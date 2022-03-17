@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PaySlip from "../PaySlip";
 import styles from './index.module.css';
 import EmployeeTable from '../EmployeeTable/EmployeeTable';
+import { v4 as uuid } from 'uuid';
 
 const PayrollForm = () => {
     const [basicData, setBasicData] = useState({
@@ -31,12 +32,13 @@ const PayrollForm = () => {
     const [localStorageArray, setArray] = useState([]);
     const [showPaySlip, setPaySlip] = useState(false);
     const [employeeData, setEmployeeData] = useState([]);
-    let [number, setNumber] = useState(-1);
+    const [oldData, setOldData] = useState(JSON.parse(localStorage.getItem("empRow") || "[]"));
 
     useEffect(() => {
         let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
         setEmployeeData(arrayOfObject);
-        console.log(arrayOfObject);
+        //setOldData(arrayOfObject);
+        console.log(oldData);
     }, [])
 
     const handleBasicData = (event) => {
@@ -55,14 +57,11 @@ const PayrollForm = () => {
         });
     }
 
-    //let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
-
     const generatePaySlip = (event) => {
         event.preventDefault();
         setPaySlip(true);
-        setNumber(++number);
         const employeeObject = {
-            id: number,
+            id: uuid(),
             empName: basicData.employeeName,
             empCode: basicData.employeeCode,
             address: basicData.address,
@@ -84,20 +83,32 @@ const PayrollForm = () => {
             professionalTax: salaryData.professionalTax
         };
 
-        localStorageArray.push(employeeObject)
-        localStorage.setItem("empRow", JSON.stringify(localStorageArray));
-        let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
-        setEmployeeData(arrayOfObject);
-        //setEmployeeData(arrayOfObject);
+        if (oldData.length === 0) {
+            //localStorageArray.push(employeeObject)
+            let concatenatedArray = localStorageArray.concat(...oldData, employeeObject);
+            setArray(concatenatedArray);
+            localStorage.setItem("empRow", JSON.stringify(concatenatedArray));
+            console.log(localStorageArray);
+            let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
+            setEmployeeData(arrayOfObject);
+            console.log("check");
+        }
+        else {
+            //localStorageArray.push(...oldData, employeeObject)
+            let refreshedData = localStorageArray.concat(...oldData, employeeObject);
+            setArray(refreshedData);
+            console.log(refreshedData);
+            localStorage.setItem("empRow", JSON.stringify(refreshedData));
+            let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
+            setEmployeeData(arrayOfObject);
+            setOldData("");
+            console.log("passed");
+        }
     }
 
     const props = {
         ...basicData,
         ...salaryData
-    }
-
-    const employeeProp = {
-        ...employeeData
     }
 
     return (
@@ -234,12 +245,7 @@ const PayrollForm = () => {
             </form>
             <br></br>
             {employeeData.length > 0 && <>
-                <EmployeeTable
-                    arrayOfObject={employeeData}
-                    //employeeProp={employeeProp}
-                    setEmployeeData={setEmployeeData}
-                    employeeData={employeeData}
-                />
+                <EmployeeTable arrayOfObject={employeeData}/>
             </>}
             <div>
                 {showPaySlip && <PaySlip {...props} />}

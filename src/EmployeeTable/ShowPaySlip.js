@@ -1,6 +1,7 @@
 import React from "react";
 import classes from './ShowPaySlip.module.css';
 import Apton_logo from '../PayrollForm/Apton_logo.jpg';
+import ReactToPrint from 'react-to-print';
 
 const ShowPaySlip = (props) => {
     const { id, empName, empCode, address,
@@ -8,6 +9,18 @@ const ShowPaySlip = (props) => {
         designation, paidDays, lop, uanNumber,
         aadharNumber, hra, basic, conveyanceAllowance,
         specialAllowance, bonus, pfAmount, esi, professionalTax } = props;
+
+    const printPaySlip = () => {
+        const paySlip = document.getElementsByClassName(classes.container)[0].innerHTML;
+        console.log(paySlip);
+        const open = window.open("", "", 'height=1920, width=1920');
+        open.document.write('<html>');
+        //open.document.write('<body > <h1>Div contents are <br>');
+        open.document.write(paySlip);
+        open.document.write('</body></html>');
+        open.document.close();
+        open.print();
+    }
 
     return (
         <div>
@@ -90,8 +103,9 @@ const ShowPaySlip = (props) => {
                         </tr>
                     </tbody>
                 </table>
-                <br></br>
             </div>
+            <button onClick={() => printPaySlip()} className={`btn btn-light ${classes.printButton}`} >Print</button>
+            <br></br>
         </div>
     )
 }

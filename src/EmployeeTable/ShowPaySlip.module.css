@@ -1,8 +1,12 @@
 .container {
     border: 2px solid black;
-    margin: 30px;
+    margin: 30px 30px 0 30px;
     /*background: url("../Blue_striped.jpg") no-repeat;
     background-size: 100%;*/
+}
+
+.printButton {
+    margin-left: 30px;
 }
 
 .firstRow {

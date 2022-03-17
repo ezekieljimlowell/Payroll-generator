@@ -8,10 +8,23 @@ const PaySlip = (props) => {
         accountNumber, hra, basic, conveyanceAllowance, specialAllowance,
         bonus, pfAmount, esi, professionalTax } = props;
 
+    const printHandler = () => {
+        const paySlip = document.getElementsByClassName(classes.container)[0].innerHTML;
+        console.log(paySlip);
+        const open = window.open("", "", 'height=1920, width=1920');
+        open.document.write('<html>');
+        open.document.write(`<body classname=${classes.container}>`);
+        open.document.write(paySlip);
+        open.document.write('</body></html>');
+        open.document.close();
+        open.print();
+    }
+
     return (
+        <div>
         <div className={classes.container}>
             <div className={classes.header}>
-            <img src={Apton_logo} alt="Apton logo"></img>
+                <img src={Apton_logo} alt="Apton logo"></img>
                 <div>No: 7, Kaliamman kovil street, Rathnapuri, Chennai-600107</div>
                 <b><div>Payslip for the month: {month}</div></b>
             </div>
@@ -49,31 +62,31 @@ const PaySlip = (props) => {
                     <tr>
                         <td>Basic</td>
                         <td>{basic}</td>
-                        <td>{basic*12}</td>
+                        <td>{basic * 12}</td>
                         <td>PF amount</td>
                         <td>{pfAmount}</td>
-                        <td>{pfAmount*12}</td>
+                        <td>{pfAmount * 12}</td>
                     </tr>
                     <tr>
                         <td>HRA</td>
                         <td>{hra}</td>
-                        <td>{hra*12}</td>
+                        <td>{hra * 12}</td>
                         <td>ESI</td>
                         <td>{esi}</td>
-                        <td>{esi*12}</td>
+                        <td>{esi * 12}</td>
                     </tr>
                     <tr>
                         <td>Conveyance allowance</td>
                         <td>{conveyanceAllowance}</td>
-                        <td>{conveyanceAllowance*12}</td>
+                        <td>{conveyanceAllowance * 12}</td>
                         <td>Professional Tax</td>
                         <td>{professionalTax}</td>
-                        <td>{professionalTax*12}</td>
+                        <td>{professionalTax * 12}</td>
                     </tr>
                     <tr>
                         <td>Special allowance</td>
                         <td>{specialAllowance}</td>
-                        <td>{specialAllowance*12}</td>
+                        <td>{specialAllowance * 12}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -81,14 +94,16 @@ const PaySlip = (props) => {
                     <tr>
                         <td>Bonus</td>
                         <td>{bonus}</td>
-                        <td>{bonus*12}</td>
+                        <td>{bonus * 12}</td>
                         <td></td>
                         <td></td>
                         <td></td>
                     </tr>
-                </tbody>                
+                </tbody>
             </table>
             <br></br>
+        </div>
+        <button type="button" onClick={() => printHandler()} className={`btn btn-light ${classes.printButton}`} >Print</button>
         </div>
     )
 }
