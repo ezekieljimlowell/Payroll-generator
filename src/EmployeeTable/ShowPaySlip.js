@@ -12,7 +12,7 @@ const ShowPaySlip = (props) => {
 
     const printPaySlip = () => {
         const paySlip = document.getElementsByClassName(classes.container)[0].innerHTML;
-        console.log(paySlip);
+        //console.log(paySlip);
         const open = window.open("", "", 'height=1920, width=1920');
         open.document.write('<html>');
         //open.document.write('<body > <h1>Div contents are <br>');

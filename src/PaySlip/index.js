@@ -10,11 +10,11 @@ const PaySlip = (props) => {
 
     const printHandler = () => {
         const paySlip = document.getElementsByClassName(classes.container)[0].innerHTML;
-        console.log(paySlip);
+        //console.log(paySlip);
         const open = window.open("", "", 'height=1920, width=1920');
         open.document.write('<html>');
-        open.document.write(`<body classname=${classes.container}>`);
-        open.document.write(paySlip);
+        open.document.write(`<body> <div classname=${`btn btn-light ${classes.container}`}>${paySlip}</div>`);
+        //open.document.write(paySlip);
         open.document.write('</body></html>');
         open.document.close();
         open.print();

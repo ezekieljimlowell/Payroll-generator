@@ -15,7 +15,7 @@ const EmployeeTable = ({ arrayOfObject }) => {
         setShowPaySlip(true);
         setHideIndex(index);
     }
-    console.log(paySlipData);
+    //console.log(paySlipData);
 
     const hideHandler = (index) => {
         if (hideIndex === index) {
