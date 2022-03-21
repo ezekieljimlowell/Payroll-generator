@@ -24,3 +24,33 @@ function printDiv() {
             a.print();
         }
     </script>
+    /*if (basicData.employeeName === "" || (!/^[a-zA-Z ]*$/.test(basicData.employeeName))) {
+            const nameInput = document.querySelector(`input[name = employeeName]`);
+            nameInput.focus();
+            employeeNameError = (basicData.employeeName === "" ? "Employee name should not be empty" : "Please give only alphabets");
+        }
+        else if (basicData.employeeCode === "") {
+            const codeInput = document.querySelector(`input[name = employeeCode]`);
+            codeInput.focus();
+            employeeCodeError = "Employee code should not be empty";
+        }
+        else if (basicData.address === "") {
+            const addressInput = document.querySelector("input[name = address]");
+            addressInput.focus();
+            addressError = "Address should not be empty";
+        }
+        else if (basicData.aadharNumber === "" || !/\d{12}/.test(parseInt(basicData.aadharNumber))) {
+            const aadharInput = document.querySelector("input[name = aadharNumber]");
+            aadharInput.focus();
+            aadharNumberError = (basicData.aadharNumber === "" ? "Aadhar number should not be empty" : "Please give exactly 12 digit");
+        }
+        else if (basicData.month === "") {
+            const monthInput = document.querySelector("input[name = month]");
+            monthInput.focus();
+            monthError = "Month should not be empty";
+        }
+        else if (basicData.department === "" || !/^[A-Za-z ]+$/.test(basicData.department)) {
+            const departmentInput = document.querySelector("input[name = department]");
+            departmentInput.focus();
+            departmentError = (basicData.department === "" ? "Department should not be empty" : "Department should be in alphabets");
+        }*/

@@ -17,9 +17,7 @@ const PayrollForm = () => {
         lop: "",
         uanNumber: "",
         designation: "",
-        accountNumber: ""
-    });
-    const [salaryData, setSalaryData] = useState({
+        accountNumber: "",
         hra: "",
         basic: "",
         conveyanceAllowance: "",
@@ -28,7 +26,8 @@ const PayrollForm = () => {
         pfAmount: "",
         esi: "",
         professionalTax: ""
-    })
+    });
+
     const [errors, setErrors] = useState({
         employeeNameError: "",
         employeeCodeError: "",
@@ -84,37 +83,135 @@ const PayrollForm = () => {
         let bonusError = "";
         let pfAmountError = "";
         let esiError = "";
-        let professionalTaxError = ""
+        let professionalTaxError = "";
 
-        if (basicData.employeeName === "" || (!/^[a-zA-Z ]*$/.test(basicData.employeeName))) {
-            const nameInput = document.querySelector(`input[name = employeeName]`);
-            nameInput.focus();
-            employeeNameError = (basicData.employeeName === "" ? "Employee name should not be empty" : "Please give only alphabets");
-        }
-        else if (basicData.employeeCode === "") {
-            const codeInput = document.querySelector(`input[name = employeeCode]`);
-            codeInput.focus();
-            employeeCodeError = "Employee code should not be empty";
-        }
-        else if (basicData.address === "") {
-            const addressInput = document.querySelector("input[name = address]");
-            addressInput.focus();
-            addressError = "Address should not be empty";
-        }
-        else if(basicData.aadharNumber === "" || !/\d{12}/.test(parseInt(basicData.aadharNumber))) {
-            const aadharInput = document.querySelector("input[name = aadharNumber]");
-            aadharInput.focus();
-            aadharNumberError = (basicData.aadharNumber === "" ? "Aadhar number should not be empty" : "Please give exactly 12 digit");
-        }
-        else if(basicData.month === "") {
-            const monthInput = document.querySelector("input[name = month]");
-            monthInput.focus();
-            monthError = "Month should not be empty";
-        }
-        else if(basicData.department === "" || !/^[A-Za-z ]+$/.test(basicData.department)) {
-            const departmentInput = document.querySelector("input[name = department]");
-            departmentInput.focus();
-            departmentError = (basicData.department === "" ? "Department should not be empty" : "Department should be in alphabets");
+        switch (true) {
+            //Basic details
+            case (basicData.employeeName === "" || !/^[A-Z-a-z ]*$/.test(basicData.employeeName)):
+                const nameInput = document.querySelector(`input[name = employeeName]`);
+                nameInput.focus();
+                employeeNameError = (basicData.employeeName === "" ? "Employee name should not be empty" : "Please give only alphabets");
+                break;
+            case (basicData.employeeCode === ""):
+                const codeInput = document.querySelector(`input[name = employeeCode]`);
+                codeInput.focus();
+                employeeCodeError = "Employee code should not be empty";
+                break;
+            case (basicData.address === ""):
+                const addressInput = document.querySelector("input[name = address]");
+                addressInput.focus();
+                addressError = "Address should not be empty";
+                break;
+            case (basicData.aadharNumber === "" || !/\d{12}/.test(basicData.aadharNumber)):
+                const aadharInput = document.querySelector("input[name = aadharNumber]");
+                aadharInput.focus();
+                aadharNumberError = (basicData.aadharNumber === "" ? "Aadhar number should not be empty" : "Please give exactly 12 digit");
+                break;
+            case (basicData.month === ""):
+                const monthInput = document.querySelector("input[name = month]");
+                monthInput.focus();
+                monthError = "Month should not be empty";
+                break;
+            case (basicData.department === "" || !/^[A-Z-a-z ]*$/.test(basicData.department)):
+                const departmentInput = document.querySelector("input[name = department]");
+                departmentInput.focus();
+                departmentError = (basicData.department === "" ? "Department should not be empty" : "Department should be in alphabets");
+                break;
+            case (basicData.pfNumber === "" || !/^[A-Z-a-z-0-9\-]{22}/):
+                const pfNumberInput = document.querySelector("input[name = pfNumber]");
+                pfNumberInput.focus();
+                pfNumberError = (basicData.pfNumber === "" ? "PF number should not be empty" : "Please give only numbers and characters with length 22 only");
+                break;
+            case (basicData.paidDays === "" || !/^\d{1,2}$/.test(basicData.paidDays)):
+                const paidDaysInput = document.querySelector("input[name = paidDays]");
+                paidDaysInput.focus();
+                paidDaysError = (basicData.paidDays === "" ? "Paid days should not be empty" : "Please give only digits of length one or two");
+                break;
+            case (basicData.lop === "" || !/^\d{1,2}$/.test(basicData.lop)):
+                const lopInput = document.querySelector("input[name = lop]");
+                lopInput.focus();
+                lopError = (basicData.lop === "" ? "LOP should not be empty" : "Please give LOP in digits of length one or two");
+                break
+            case (basicData.uanNumber === "" || !/\d{12}/.test(basicData.uanNumber)):
+                const uanInput = document.querySelector("input[name = uanNumber]");
+                uanInput.focus();
+                uanNumberError = (basicData.uanNumber === "" ? "UAN number should not be empty" : "UAN number must be exactly 12 digits");
+                break;
+            case (basicData.designation === "" || !/^[a-zA-Z ]*$/.test(basicData.designation)):
+                const designationInput = document.querySelector("input[name = designation]");
+                designationInput.focus();
+                designationError = (basicData.designation === "" ? "Designation should not be empty" : "Designation should be in alphabets");
+                break;
+            case (basicData.accountNumber === "" || !/^[0-9]/.test(basicData.accountNumber)):
+                const accountInput = document.querySelector("input[name = accountNumber]");
+                accountInput.focus();
+                accountNumberError = (basicData.accountNumber === "" ? "Account number should not be empty" : "Please give numbers only for account number");
+                break;
+            case (basicData.hra === "" || !/^[0-9]/.test(basicData.hra)):
+                const hraInput = document.querySelector("input[name = hra]");
+                hraInput.focus();
+                hraError = (basicData.hra === "" ? "HRA should be filled" : "HRA should be number");
+                break;
+            case (basicData.basic === "" || !/^[0-9]/.test(basicData.basic)):
+                const basicInput = document.querySelector("input[name = basic]");
+                basicInput.focus();
+                basicError = (basicData.basic === "" ? "Basic should not be empty" : "Basic must be in numbers");
+                break;
+            case (basicData.conveyanceAllowance === "" || !/^[0-9]/.test(basicData.conveyanceAllowance)):
+                const conveyanceInput = document.querySelector("input[name = conveyanceAllowance]");
+                conveyanceInput.focus();
+                conveyanceAllowanceError = (basicData.conveyanceAllowance === "" ? "Conveyance should not be empty" : "Conveyance should be in numbers");
+                break;
+            case (basicData.specialAllowance === "" || !/^[0-9]/.test(basicData.specialAllowance)):
+                const specialAllowanceInput = document.querySelector("input[name = specialAllowance]");
+                specialAllowanceInput.focus();
+                specialAllowanceError = (basicData.specialAllowance === "" ? "Special allowance should not be empty" : "Speacial allowance must be in numbers");
+                break;
+            case (basicData.bonus === "" || !/^[0-9]/.test(basicData.bonus)):
+                const bonusInput = document.querySelector("input[name = bonus]");
+                bonusInput.focus();
+                bonusError = (basicData.bonus === "" ? "Bonus should be filled" : "Bonus should be number");
+                break;
+            case (basicData.pfAmount === "" || !/^[0-9]/.test(basicData.pfAmount)):
+                const pfAmountInput = document.querySelector("input[name = pfAmount]");
+                pfAmountInput.focus();
+                pfAmountError = (basicData.pfAmount === "" ? "PF amount should be filled" : "PF amount should be number");
+                break;
+            case (basicData.esi === "" || !/^[0-9]/.test(basicData.esi)):
+                const esiInput = document.querySelector("input[name = esi]");
+                esiInput.focus();
+                esiError = (basicData.esi === "" ? "ESI should be filled" : "ESI should be number");
+                break;
+            case (basicData.professionalTax === "" || !/^[0-9]/.test(basicData.professionalTax)):
+                const professionalInput = document.querySelector("input[name = professionalTax]");
+                professionalInput.focus();
+                professionalTaxError = (basicData.professionalTax === "" ? "Professional tax should be filled" : "Professional tax should be number");
+                break;
+            default:
+                setErrors({
+                    employeeNameError: "",
+                    employeeCodeError: "",
+                    addressError: "",
+                    aadharNumberError: "",
+                    monthError: "",
+                    departmentError: "",
+                    pfNumberError: "",
+                    paidDaysError: "",
+                    lopError: "",
+                    uanNumberError: "",
+                    designationError: "",
+                    accountNumberError: "",
+                    hraError: "",
+                    basicError: "",
+                    conveyanceAllowanceError: "",
+                    specialAllowanceError: "",
+                    bonusError: "",
+                    pfAmountError: "",
+                    esiError: "",
+                    professionalTaxError: ""
+                });
+                break;
+
         }
         if (employeeNameError || employeeCodeError || addressError ||
             aadharNumberError || monthError || departmentError || pfNumberError ||
@@ -155,14 +252,37 @@ const PayrollForm = () => {
             ...basicData,
             [event.target.name]: value
         });
-    }
 
-    const handleSalaryDetails = (event) => {
-        const value = event.target.value;
-        setSalaryData({
-            ...salaryData,
-            [event.target.name]: value
-        });
+        if (basicData.employeeName !== "" || basicData.employeeCode !== "" || basicData.address !== "" || basicData.aadharNumber !== "" ||
+            basicData.month !== "" || basicData.department !== "" || basicData.pfNumber !== "" || basicData.paidDays !== "" ||
+            basicData.lop !== "" || basicData.uanNumber !== "" || basicData.designation !== "" || basicData.accountNumber !== "" ||
+            basicData.hra !== "" || basicData.basic !== "" || basicData.conveyanceAllowance !== "" || basicData.specialAllowance !== "" ||
+            basicData.bonus !== "" || basicData.pfAmount !== "" || basicData.esi !== "" || basicData.professionalTax !== ""
+        ) {
+            setErrors({
+                employeeNameError: "",
+                employeeCodeError: "",
+                addressError: "",
+                aadharNumberError: "",
+                monthError: "",
+                departmentError: "",
+                pfNumberError: "",
+                paidDaysError: "",
+                lopError: "",
+                uanNumberError: "",
+                designationError: "",
+                accountNumberError: "",
+                hraError: "",
+                basicError: "",
+                conveyanceAllowanceError: "",
+                specialAllowanceError: "",
+                bonusError: "",
+                pfAmountError: "",
+                esiError: "",
+                professionalTaxError: ""
+            })
+        }
+
     }
 
     const generatePaySlip = (event) => {
@@ -182,14 +302,14 @@ const PayrollForm = () => {
                 lop: basicData.lop,
                 uanNumber: basicData.uanNumber,
                 aadharNumber: basicData.aadharNumber,
-                hra: salaryData.hra,
-                basic: salaryData.basic,
-                conveyanceAllowance: salaryData.conveyanceAllowance,
-                specialAllowance: salaryData.specialAllowance,
-                bonus: salaryData.bonus,
-                pfAmount: salaryData.pfAmount,
-                esi: salaryData.esi,
-                professionalTax: salaryData.professionalTax
+                hra: basicData.hra,
+                basic: basicData.basic,
+                conveyanceAllowance: basicData.conveyanceAllowance,
+                specialAllowance: basicData.specialAllowance,
+                bonus: basicData.bonus,
+                pfAmount: basicData.pfAmount,
+                esi: basicData.esi,
+                professionalTax: basicData.professionalTax
             };
 
             if (oldData.length === 0) {
@@ -217,13 +337,13 @@ const PayrollForm = () => {
     }
 
     const props = {
-        ...basicData,
-        ...salaryData
+        ...basicData
+        //...salaryData
     }
 
     return (
         <div>
-            <form onSubmit={generatePaySlip} className="form-group" id={styles.payRollForm}>
+            <form onSubmit={generatePaySlip} className={`form-group ${styles.formHeader}`} id={styles.payRollForm}>
                 <h1>Apton works payroll</h1>
                 <h2>Basic Information</h2>
                 <div className="form-row">
@@ -231,7 +351,7 @@ const PayrollForm = () => {
                     <div className="col-6">
                         <input className="form-control" type="text" onChange={handleBasicData}
                             name="employeeName" value={basicData.employeeName}></input>
-                        {errors.employeeNameError && <span style={{ color: "red" }}>{errors.employeeNameError}</span>}
+                        {errors.employeeNameError && <span>{errors.employeeNameError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
@@ -239,7 +359,7 @@ const PayrollForm = () => {
                     <div className="col-6">
                         <input type="text" className="form-control" onChange={handleBasicData}
                             name="employeeCode" value={basicData.employeeCode}></input>
-                        {errors.employeeCodeError && <span style={{ color: "red" }}>{errors.employeeCodeError}</span>}
+                        {errors.employeeCodeError && <span>{errors.employeeCodeError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
@@ -271,6 +391,7 @@ const PayrollForm = () => {
                     <div className="col-6">
                         <input type="text" className="form-control" onChange={handleBasicData}
                             name="department" value={basicData.department}></input>
+                        {errors.departmentError && <span>{errors.departmentError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
@@ -278,6 +399,7 @@ const PayrollForm = () => {
                     <div className="col-6">
                         <input type="text" className="form-control" onChange={handleBasicData}
                             name="pfNumber" value={basicData.pfNumber}></input>
+                        {errors.pfNumberError && <span>{errors.pfNumberError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
@@ -285,6 +407,7 @@ const PayrollForm = () => {
                     <div className="col-6">
                         <input type="text" className="form-control" onChange={handleBasicData}
                             name="paidDays" value={basicData.paidDays}></input>
+                        {errors.paidDaysError && <span>{errors.paidDaysError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
@@ -292,6 +415,7 @@ const PayrollForm = () => {
                     <div className="col-6">
                         <input type="text" className="form-control" onChange={handleBasicData}
                             name="lop" value={basicData.lop}></input>
+                        {errors.lopError && <span>{errors.lopError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
@@ -299,6 +423,7 @@ const PayrollForm = () => {
                     <div className="col-6">
                         <input type="text" className="form-control" onChange={handleBasicData}
                             name="uanNumber" value={basicData.uanNumber}></input>
+                        {errors.uanNumberError && <span>{errors.uanNumberError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
@@ -306,6 +431,7 @@ const PayrollForm = () => {
                     <div className="col-6">
                         <input type="text" className="form-control" onChange={handleBasicData}
                             name="designation" value={basicData.designation}></input>
+                        {errors.designationError && <span>{errors.designationError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
@@ -313,6 +439,7 @@ const PayrollForm = () => {
                     <div className="col-6">
                         <input type="text" className="form-control" onChange={handleBasicData}
                             name="accountNumber" value={basicData.accountNumber}></input>
+                        {errors.accountNumberError && <span>{errors.accountNumberError}</span>}
                     </div>
                 </div>
 
@@ -321,56 +448,64 @@ const PayrollForm = () => {
                 <div className="form-row">
                     <label>HRA</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" name="hra" onChange={handleSalaryDetails}></input>
+                        <input type="text" className="form-control" name="hra" onChange={handleBasicData} value={basicData.hra}></input>
+                        {errors.hraError && <span>{errors.hraError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Basic</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails}
-                            name="basic" value={salaryData.basic}></input>
+                        <input type="text" className="form-control" onChange={handleBasicData}
+                            name="basic" value={basicData.basic}></input>
+                        {errors.basicError && <span>{errors.basicError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Conveyance allowance</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails}
-                            name="conveyanceAllowance" value={salaryData.conveyanceAllowance}></input>
+                        <input type="text" className="form-control" onChange={handleBasicData}
+                            name="conveyanceAllowance" value={basicData.conveyanceAllowance}></input>
+                        {errors.conveyanceAllowanceError && <span>{errors.conveyanceAllowanceError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Special allowance</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails}
-                            name="specialAllowance" value={salaryData.specialAllowance}></input>
+                        <input type="text" className="form-control" onChange={handleBasicData}
+                            name="specialAllowance" value={basicData.specialAllowance}></input>
+                        {errors.specialAllowanceError && <span>{errors.specialAllowanceError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Bonus</label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails}
-                            name="bonus" value={salaryData.bonus}></input>
+                        <input type="text" className="form-control" onChange={handleBasicData}
+                            name="bonus" value={basicData.bonus}></input>
+                        {errors.bonusError && <span>{errors.bonusError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
                     <label>PF amount </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails}
-                            name="pfAmount" value={salaryData.pfAmount}></input>
+                        <input type="text" className="form-control" onChange={handleBasicData}
+                            name="pfAmount" value={basicData.pfAmount}></input>
+                        {errors.pfAmountError && <span>{errors.pfAmountError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
                     <label>ESI </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails}
-                            name="esi" value={salaryData.esi}></input>
+                        <input type="text" className="form-control" onChange={handleBasicData}
+                            name="esi" value={basicData.esi}></input>
+                        {errors.esiError && <span>{errors.esiError}</span>}
                     </div>
                 </div>
                 <div className="form-row">
                     <label>Professional tax </label>
                     <div className="col-6">
-                        <input type="text" className="form-control" onChange={handleSalaryDetails}
-                            name="professionalTax" value={salaryData.professionalTax}></input>
+                        <input type="text" className="form-control" onChange={handleBasicData}
+                            name="professionalTax" value={basicData.professionalTax}></input>
+                        {errors.professionalTaxError && <span>{errors.professionalTaxError}</span>}
                     </div>
                 </div>
                 <br></br>
