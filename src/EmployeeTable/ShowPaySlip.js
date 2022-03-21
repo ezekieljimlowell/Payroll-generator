@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import classes from './ShowPaySlip.module.css';
 import Apton_logo from '../PayrollForm/Apton_logo.jpg';
-import ReactToPrint from 'react-to-print';
+import { useReactToPrint } from "react-to-print";
 
 const ShowPaySlip = (props) => {
     const { id, empName, empCode, address,
@@ -10,21 +10,15 @@ const ShowPaySlip = (props) => {
         aadharNumber, hra, basic, conveyanceAllowance,
         specialAllowance, bonus, pfAmount, esi, professionalTax } = props;
 
-    const printPaySlip = () => {
-        const paySlip = document.getElementsByClassName(classes.container)[0].innerHTML;
-        //console.log(paySlip);
-        const open = window.open("", "", 'height=1920, width=1920');
-        open.document.write('<html>');
-        //open.document.write('<body > <h1>Div contents are <br>');
-        open.document.write(paySlip);
-        open.document.write('</body></html>');
-        open.document.close();
-        open.print();
-    }
+        const componentRef = useRef();
+
+    const printPaySlip =useReactToPrint({
+        content: () => componentRef.current
+    })
 
     return (
         <div>
-            <div className={classes.container}>
+            <div className={classes.container} ref={componentRef}>
                 <div className={classes.header}>
                     <img src={Apton_logo} alt="Apton logo"></img>
                     <div>No: 7, Kaliamman kovil street, Rathnapuri, Chennai-600107</div>

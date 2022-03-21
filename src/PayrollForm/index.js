@@ -51,6 +51,15 @@ const PayrollForm = () => {
         professionalTaxError: ""
     })
 
+    const [isDuplicatePresent, setDuplicate] = useState({
+        duplicateEmployeeCode: false,
+        duplicateAddress: false,
+        duplicateAadhar: false,
+        duplicatePfNumber: false,
+        duplicateUanNumber: false,
+        duplicateAccountNumber: false
+    })
+
     const [localStorageArray, setArray] = useState([]);
     const [showPaySlip, setPaySlip] = useState(false);
     const [employeeData, setEmployeeData] = useState([]);
@@ -244,6 +253,10 @@ const PayrollForm = () => {
             return false;
         }
         return true;
+    }
+
+    const duplicateValidation = () => {
+        const duplicateEmployeeCode = employeeData.length > 0 && employeeData.some()
     }
 
     const handleBasicData = (event) => {
