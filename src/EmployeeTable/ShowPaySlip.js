@@ -1,18 +1,20 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import classes from './ShowPaySlip.module.css';
 import Apton_logo from '../PayrollForm/Apton_logo.jpg';
 import { useReactToPrint } from "react-to-print";
 
 const ShowPaySlip = (props) => {
     const { id, empName, empCode, address,
-        month, accountNumber, department,
+        month, accountNumber, department, pfNumber,
         designation, paidDays, lop, uanNumber,
         aadharNumber, hra, basic, conveyanceAllowance,
         specialAllowance, bonus, pfAmount, esi, professionalTax } = props;
 
-        const componentRef = useRef();
+    const [shortMonth] = useState(new Date(month).toLocaleString("en", { month: "short"}));
+    const [year] = useState(new Date(month).getFullYear());
+    const componentRef = useRef();
 
-    const printPaySlip =useReactToPrint({
+    const printPaySlip = useReactToPrint({
         content: () => componentRef.current
     })
 
@@ -22,7 +24,7 @@ const ShowPaySlip = (props) => {
                 <div className={classes.header}>
                     <img src={Apton_logo} alt="Apton logo"></img>
                     <div>No: 7, Kaliamman kovil street, Rathnapuri, Chennai-600107</div>
-                    <b><div>Payslip for the month: {month}</div></b>
+                    <b><div>Payslip for the month: {`${shortMonth} ${year}`}</div></b>
                 </div>
                 <div className={classes.line}></div>
                 <div className={classes.firstRow}>
@@ -36,7 +38,7 @@ const ShowPaySlip = (props) => {
                     </div>
                     <div className={classes.secondColumn}>
                         <div>Aadhar number: {aadharNumber}</div>
-                        {/*<div>PF number: {pfNumber}</div>*/}
+                        <div>PF number: {pfNumber}</div>
                         <div>UAN: {uanNumber}</div>
                         <div>Bank account number: {accountNumber}</div>
                         <div>Paid days: {paidDays}</div>

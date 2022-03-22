@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import classes from './index.module.css';
 import Apton_logo from '../PayrollForm/Apton_logo.jpg';
@@ -10,6 +10,10 @@ const PaySlip = (props) => {
         bonus, pfAmount, esi, professionalTax } = props;
     const componentRef = useRef();
 
+    const [shortMonth] = useState(new Date(month).toLocaleString("en", { month: "short"}))
+    const [fullYear] = useState(new Date(month).getFullYear());
+
+    console.log();
     const printHandler = useReactToPrint({
         content: () => componentRef.current
     });
@@ -20,7 +24,7 @@ const PaySlip = (props) => {
                 <div className={classes.header}>
                     <img src={Apton_logo} alt="Apton logo"></img>
                     <div>No: 7, Kaliamman kovil street, Rathnapuri, Chennai-600107</div>
-                    <b><div>Payslip for the month: {month}</div></b>
+                    <b><div>Payslip for the month: {`${shortMonth} ${fullYear}`}</div></b>
                 </div>
                 <div className={classes.line}></div>
                 <div className={classes.firstRow}>

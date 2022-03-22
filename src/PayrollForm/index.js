@@ -51,19 +51,14 @@ const PayrollForm = () => {
         professionalTaxError: ""
     })
 
-    const [isDuplicatePresent, setDuplicate] = useState({
-        duplicateEmployeeCode: false,
-        duplicateAddress: false,
-        duplicateAadhar: false,
-        duplicatePfNumber: false,
-        duplicateUanNumber: false,
-        duplicateAccountNumber: false
-    })
-
     const [localStorageArray, setArray] = useState([]);
     const [showPaySlip, setPaySlip] = useState(false);
     const [employeeData, setEmployeeData] = useState([]);
     const [oldData, setOldData] = useState(JSON.parse(localStorage.getItem("empRow") || "[]"));
+
+    const isMozillaFirefox = typeof InstallTrigger !== 'undefined';
+    const isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })
+        (!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
 
     useEffect(() => {
         let arrayOfObject = JSON.parse(localStorage.getItem("empRow") || "[]");
@@ -111,7 +106,7 @@ const PayrollForm = () => {
                 addressInput.focus();
                 addressError = "Address should not be empty";
                 break;
-            case (basicData.aadharNumber === "" || !/\d{12}/.test(basicData.aadharNumber)):
+            case (basicData.aadharNumber === "" || !/^\d{12}$/.test(basicData.aadharNumber)):
                 const aadharInput = document.querySelector("input[name = aadharNumber]");
                 aadharInput.focus();
                 aadharNumberError = (basicData.aadharNumber === "" ? "Aadhar number should not be empty" : "Please give exactly 12 digit");
@@ -126,7 +121,7 @@ const PayrollForm = () => {
                 departmentInput.focus();
                 departmentError = (basicData.department === "" ? "Department should not be empty" : "Department should be in alphabets");
                 break;
-            case (basicData.pfNumber === "" || !/^[A-Z-a-z-0-9\-]{22}/):
+            case (basicData.pfNumber === "" || !/^[A-Z-a-z-0-9\-]{22}$/.test(basicData.pfNumber)):
                 const pfNumberInput = document.querySelector("input[name = pfNumber]");
                 pfNumberInput.focus();
                 pfNumberError = (basicData.pfNumber === "" ? "PF number should not be empty" : "Please give only numbers and characters with length 22 only");
@@ -141,7 +136,7 @@ const PayrollForm = () => {
                 lopInput.focus();
                 lopError = (basicData.lop === "" ? "LOP should not be empty" : "Please give LOP in digits of length one or two");
                 break
-            case (basicData.uanNumber === "" || !/\d{12}/.test(basicData.uanNumber)):
+            case (basicData.uanNumber === "" || !/^\d{12}$/.test(basicData.uanNumber)):
                 const uanInput = document.querySelector("input[name = uanNumber]");
                 uanInput.focus();
                 uanNumberError = (basicData.uanNumber === "" ? "UAN number should not be empty" : "UAN number must be exactly 12 digits");
@@ -256,7 +251,56 @@ const PayrollForm = () => {
     }
 
     const duplicateValidation = () => {
-        const duplicateEmployeeCode = employeeData.length > 0 && employeeData.some()
+        const duplicateEmployeeCode = employeeData.length > 0 && employeeData.some(data => basicData.employeeCode === data.empCode);
+        const duplicateAddress = employeeData.length > 0 && employeeData.some(data => data.address === basicData.address);
+        const duplicateAadhar = employeeData.length > 0 && employeeData.some(data => data.aadharNumber === basicData.aadharNumber);
+        const duplicatePfNumber = employeeData.length > 0 && employeeData.some(data => data.pfNumber === basicData.pfNumber);
+        const duplicateUanNumber = employeeData.length > 0 && employeeData.some(data => data.uanNumber === basicData.uanNumber);
+        const duplicateAccountNumber = employeeData.length > 0 && employeeData.some(data => data.accountNumber === basicData.accountNumber);
+
+        switch (true) {
+            case (duplicateEmployeeCode):
+                //setDuplicate({ duplicateEmployeeCode: true });
+                setErrors({ employeeCodeError: "Duplicate values are not allowed" });
+                const codeInput = document.querySelector(`input[name = employeeCode]`);
+                codeInput.focus();
+                break;
+            case (duplicateAddress):
+                //setDuplicate({ duplicateAddress: true });
+                setErrors({ addressError: "Please does not provide duplicate address" });
+                const addressInput = document.querySelector("input[name = address]");
+                addressInput.focus();
+                break;
+            case (duplicateAadhar):
+                //setDuplicate({duplicateAadhar: true});
+                setErrors({ aadharNumberError: "Given aadhar number already present" });
+                const aadharInput = document.querySelector("input[name = aadharNumber]");
+                aadharInput.focus();
+                break;
+            case (duplicatePfNumber):
+                //setDuplicate({duplicatePfNumber: true});
+                setErrors({ pfNumberError: "Duplicate PF number not allowed" });
+                const pfNumberInput = document.querySelector("input[name = pfNumber]");
+                pfNumberInput.focus();
+                break;
+            case (duplicateUanNumber):
+                //setDuplicate({duplicateUanNumber: true});
+                setErrors({ uanNumberError: "Duplicate values are not allowed" });
+                const uanInput = document.querySelector("input[name = uanNumber]");
+                uanInput.focus();
+                break;
+            case (duplicateAccountNumber):
+                //setDuplicate({duplicateAccountNumber: true});
+                setErrors({ accountNumberError: "Duplicate account number not allowed" });
+                const accountInput = document.querySelector("input[name = accountNumber]");
+                accountInput.focus();
+                break;
+        }
+        if (duplicateEmployeeCode || duplicateAddress || duplicateAadhar || duplicatePfNumber ||
+            duplicateUanNumber || duplicateAccountNumber) {
+            return false;
+        }
+        return true;
     }
 
     const handleBasicData = (event) => {
@@ -300,7 +344,7 @@ const PayrollForm = () => {
 
     const generatePaySlip = (event) => {
         event.preventDefault();
-        if (validateInputs()) {
+        if (duplicateValidation() && validateInputs()) {
             setPaySlip(true);
             const employeeObject = {
                 id: uuid(),
@@ -310,6 +354,7 @@ const PayrollForm = () => {
                 month: basicData.month,
                 accountNumber: basicData.accountNumber,
                 department: basicData.department,
+                pfNumber: basicData.pfNumber,
                 designation: basicData.designation,
                 paidDays: basicData.paidDays,
                 lop: basicData.lop,
@@ -394,8 +439,10 @@ const PayrollForm = () => {
                 <div className="form-row">
                     <label>Month </label>
                     <div className="col-6">
-                        <input type="month" className="form-control" onChange={handleBasicData}
-                            name="month" value={basicData.month}></input>
+                        {(!isMozillaFirefox && !isSafari) && <input type="month" className="form-control" onChange={handleBasicData}
+                            name="month" value={basicData.month}></input>}
+                        {(isMozillaFirefox || isSafari) && <input type="date" name="month" className="form-control"
+                            onChange={handleBasicData} value={basicData.month}></input>}
                         {errors.monthError && <span>{errors.monthError}</span>}
                     </div>
                 </div>
